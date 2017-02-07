@@ -5,6 +5,8 @@
  */
 package chess;
 
+import info.gridworld.actor.ActorWorld;
+
 /**
  *
  * @author elicowa
@@ -14,6 +16,7 @@ public class Chess {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        ActorWorld world = new ActorWorld();
+        world.show();
     }
 }

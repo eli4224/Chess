@@ -6,22 +6,24 @@
 package chess;
 
 import info.gridworld.grid.Location;
-import java.util.ArrayList;
 
 /**
  *
  * @author elicowa
  */
 public class Rook extends WideMovingPiece {
-    boolean hasMoved = false;
+    private boolean hasMoved = false;
+    public boolean hasMoved() {
+        return hasMoved;
+    }
     @Override
     public void moveTo(Location loc) {
         super.moveTo(loc);
         this.hasMoved = true;
     }
-    public final int[] movableDirections = {0, 90, 180, 270};
+    public final static int[] movableDirections = {Location.NORTH, Location.EAST, Location.SOUTH, Location.WEST};
     @Override
-    public ArrayList<Location> getMoves() {
-        return super.getMoves(movableDirections);
+    protected int[] getMovableDirections() {
+        return movableDirections;
     }
 }

@@ -6,16 +6,15 @@
 package chess;
 
 import info.gridworld.grid.Location;
-import java.util.ArrayList;
 
 /**
  *
  * @author elicowa
  */
 public class Queen extends WideMovingPiece {
-    public final int[] movableDirections = {0, 45, 90, 135, 180, 225, 270, 315};
+    public static final int[] movableDirections = {Location.NORTH, Location.EAST, Location.SOUTH, Location.WEST, Location.NORTHEAST, Location.NORTHWEST, Location.SOUTHEAST, Location.SOUTHWEST};
     @Override
-    public ArrayList<Location> getMoves() {
-        return super.getMoves(movableDirections);
+    protected int[] getMovableDirections() {
+        return movableDirections;
     }
 }

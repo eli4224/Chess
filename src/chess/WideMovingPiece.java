@@ -13,13 +13,15 @@ import java.util.ArrayList;
  * @author elicowa
  */
 public abstract class WideMovingPiece extends Piece {
-    public ArrayList<Location> getMoves(int[] movableDirections) {
+    protected abstract int[] getMovableDirections();
+    @Override
+    public final ArrayList<Location> getMoves() {
         if (!gr.isValid(this.getLocation())) {
             throw new NullPointerException("Piece location not on grid");
         }
         Location workingLocation;
         ArrayList<Location> locs = new ArrayList();
-        for (int direction : movableDirections) {
+        for (int direction : getMovableDirections()) {
             workingLocation = this.getLocation();
             while (true) {
                 workingLocation = workingLocation.getAdjacentLocation(direction);

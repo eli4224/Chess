@@ -6,7 +6,6 @@
 package chess;
 
 import info.gridworld.grid.Location;
-import java.util.ArrayList;
 
 /**
  *
@@ -15,7 +14,7 @@ import java.util.ArrayList;
 public class Bishop extends WideMovingPiece {
     public final int[] movableDirections = {Location.NORTHEAST, Location.NORTHWEST, Location.SOUTHEAST, Location.SOUTHWEST};
     @Override
-    public ArrayList<Location> getMoves() {
-        return super.getMoves(movableDirections);
+    protected int[] getMovableDirections() {
+        return movableDirections;
     }
 }

@@ -6,6 +6,7 @@
 package chess;
 
 import info.gridworld.actor.Actor;
+import info.gridworld.grid.Grid;
 import info.gridworld.grid.Location;
 import java.util.ArrayList;
 
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 public abstract class Piece extends Actor {
     public final static Color PLAYER_ONE_COLOR = Color.WHITE;
     public final static Color PLAYER_TWO_COLOR = Color.BLACK;
+    Grid<Actor> gr = getGrid();
     public boolean canMoveTo(Location loc) { //TODO: If I have time make this abstract and implement it in each subclass
         for (Location l : getMoves()) {
             if (l.equals(loc)) {

@@ -45,4 +45,13 @@ public class King extends Piece {
         }
         return locs;
     }
+    private boolean canCastleLeft() {
+        Location workingLocation = getLocation().getAdjacentLocation(Location.WEST);
+        if (getGrid().get()) {
+            return true;
+        }
+    }
+    private boolean canCastleRight() {
+        return true;
+    }
 }

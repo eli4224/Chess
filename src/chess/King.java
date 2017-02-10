@@ -34,24 +34,41 @@ public class King extends Piece {
             }
         }
         if (!hasMoved) {
-            Piece rookRight = (Piece) gr.get(new Location(this.getLocation().getRow(), this.getLocation().getCol() + 3));
-            Piece rookLeft = (Piece) gr.get(new Location(this.getLocation().getRow(), this.getLocation().getCol() - 4)); //Left for player one
-            if (rookRight != null && rookRight instanceof Rook && rookRight.getPieceColor() == this.getPieceColor() && !((Rook) rookRight).hasMoved()) {
-                locs.add(new Location(this.getLocation().getRow(), this.getLocation().getCol() + 2));
+            if (canCastleLeft()) { //Left for player one
+                Piece rookLeft = (Piece) gr.get(new Location(this.getLocation().getRow(), this.getLocation().getCol() - 4));
+                if (rookLeft != null && rookLeft instanceof Rook && rookLeft.getPieceColor() == this.getPieceColor() && !((Rook) rookLeft).hasMoved()) {
+                    locs.add(new Location(this.getLocation().getRow(), this.getLocation().getCol() - 2));
+                }
             }
-            if (rookLeft != null && rookLeft instanceof Rook && rookLeft.getPieceColor() == this.getPieceColor() && !((Rook) rookLeft).hasMoved()) {
-                locs.add(new Location(this.getLocation().getRow(), this.getLocation().getCol() - 2));
+            if (canCastleRight()) { //Right for player one
+                Piece rookRight = (Piece) gr.get(new Location(this.getLocation().getRow(), this.getLocation().getCol() + 3));
+                if (rookRight != null && rookRight instanceof Rook && rookRight.getPieceColor() == this.getPieceColor() && !((Rook) rookRight).hasMoved()) {
+                    locs.add(new Location(this.getLocation().getRow(), this.getLocation().getCol() + 2));
+                }
             }
         }
         return locs;
     }
     private boolean canCastleLeft() {
         Location workingLocation = getLocation().getAdjacentLocation(Location.WEST);
-        if (getGrid().get()) {
-            return true;
+        for (int i = 0; i < 3; i++) {
+            if (gr.get(workingLocation) == null) {
+                workingLocation = getLocation().getAdjacentLocation(Location.WEST);
+                continue;
+            }
+            return false;
         }
+        return true;
     }
     private boolean canCastleRight() {
+        Location workingLocation = getLocation().getAdjacentLocation(Location.EAST);
+        for (int i = 0; i < 2; i++) {
+            if (gr.get(workingLocation) == null) {
+                workingLocation = getLocation().getAdjacentLocation(Location.EAST);
+                continue;
+            }
+            return false;
+        }
         return true;
     }
 }

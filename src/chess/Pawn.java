@@ -15,11 +15,15 @@ import java.util.ArrayList;
  * @author elicowa
  */
 public class Pawn extends Piece {
+    boolean homeRow = true;
     boolean hasMoved = false;
     @Override
     public void moveTo(Location loc) {
         super.moveTo(loc);
         this.hasMoved = true;
+        if (this.getLocation().getRow() != loc.getRow()) {
+            this.homeRow = false;
+        }
     }
     @Override
     public ArrayList<Location> getMoves() {

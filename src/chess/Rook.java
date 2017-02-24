@@ -13,13 +13,19 @@ import info.gridworld.grid.Location;
  */
 public class Rook extends WideMovingPiece {
     private boolean hasMoved = false;
+    public Rook(PlayerColor c) {
+        super(c);
+    }
     public boolean hasMoved() {
         return hasMoved;
     }
     @Override
-    public void moveTo(Location loc) {
-        super.moveTo(loc);
-        this.hasMoved = true;
+    public boolean moveTo(Location loc) {
+        if (super.moveTo(loc)) {
+            this.hasMoved = true;
+            return true;
+        }
+        return false;
     }
     public final static int[] movableDirections = {Location.NORTH, Location.EAST, Location.SOUTH, Location.WEST};
     @Override

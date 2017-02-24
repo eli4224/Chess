@@ -13,6 +13,9 @@ import info.gridworld.grid.Location;
  */
 public class Bishop extends WideMovingPiece {
     public final int[] movableDirections = {Location.NORTHEAST, Location.NORTHWEST, Location.SOUTHEAST, Location.SOUTHWEST};
+    public Bishop(PlayerColor c) {
+        super(c);
+    }
     @Override
     protected int[] getMovableDirections() {
         return movableDirections;

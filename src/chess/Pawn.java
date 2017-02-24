@@ -5,7 +5,6 @@
  */
 package chess;
 
-import info.gridworld.actor.Actor;
 import info.gridworld.grid.Grid;
 import info.gridworld.grid.Location;
 import java.util.ArrayList;
@@ -17,19 +16,29 @@ import java.util.ArrayList;
 public class Pawn extends Piece {
     boolean homeRow = true;
     boolean hasMoved = false;
+    public Pawn(PlayerColor c) {
+        super(c);
+    }
     @Override
-    public void moveTo(Location loc) {
-        super.moveTo(loc);
-        this.hasMoved = true;
-        if (this.getLocation().getRow() != loc.getRow()) {
-            this.homeRow = false;
+    public boolean moveTo(Location loc) {
+        if (super.moveTo(loc)) {
+            this.hasMoved = true;
+            if (this.getLocation().getRow() != loc.getRow()) {
+                this.homeRow = false;
+            }
+            if ((loc.getRow() == 0 && this.getPlayerColor() == PLAYER_ONE_COLOR) || loc.getRow() == 7 && this.getPlayerColor() == PLAYER_TWO_COLOR) {
+                this.removeSelfFromGrid();
+                new Queen(this.getPlayerColor()).putSelfInGrid(grid, loc);
+            }
+            return true;
         }
+        return false;
     }
     @Override
     public ArrayList<Location> getMoves() {
         ArrayList<Location> locs = new ArrayList();
-        Grid<Actor> gr = getGrid();
-        int rowDirection = getPieceColor() == Piece.PLAYER_ONE_COLOR ? Location.NORTH : Location.SOUTH;
+        Grid<Piece> gr = getGrid();
+        int rowDirection = this.getPlayerColor() == Piece.PLAYER_ONE_COLOR ? Location.NORTH : Location.SOUTH;
         Location stPawnMove = this.getLocation().getAdjacentLocation(rowDirection);
         if (gr.isValid(stPawnMove) && gr.get(stPawnMove) == null) {
             locs.add(stPawnMove);
@@ -42,7 +51,7 @@ public class Pawn extends Piece {
         }
         for (int direction : new int[]{Location.LEFT, Location.RIGHT}) {
             Location take = stPawnMove.getAdjacentLocation(direction);
-            if (gr.isValid(take) && gr.get(take) != null && gr.get(take) instanceof Piece && ((Piece) gr.get(take)).getPieceColor() != this.getPieceColor()) {
+            if (gr.isValid(take) && gr.get(take) != null && gr.get(take).getPlayerColor() != this.getPlayerColor()) {
                 locs.add(take);
             }
         }

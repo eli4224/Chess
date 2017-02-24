@@ -5,7 +5,6 @@
  */
 package chess;
 
-import info.gridworld.actor.Actor;
 import info.gridworld.grid.Grid;
 import info.gridworld.grid.Location;
 import java.util.ArrayList;
@@ -16,33 +15,39 @@ import java.util.ArrayList;
  */
 public class King extends Piece {
     private boolean hasMoved = false;
+    public King(PlayerColor c) {
+        super(c);
+    }
     public boolean hasMoved() {
         return hasMoved;
     }
     @Override
-    public void moveTo(Location loc) { //TODO castling stuff
-        super.moveTo(loc);
-        this.hasMoved = true;
+    public boolean moveTo(Location loc) { //TODO castling stuff
+        if (super.moveTo(loc)) {
+            this.hasMoved = true;
+            return true;
+        }
+        return false;
     }
     @Override
     public ArrayList<Location> getMoves() {
         ArrayList<Location> locs = new ArrayList();
-        Grid<Actor> gr = getGrid();
+        Grid<Piece> gr = getGrid();
         for (Location kingmove : gr.getValidAdjacentLocations(this.getLocation())) {
-            if (gr.get(kingmove) == null || (gr.get(kingmove) instanceof Piece && ((Piece) gr.get(kingmove)).getPieceColor() != this.getPieceColor())) {
+            if (gr.get(kingmove) == null || gr.get(kingmove).getPlayerColor() != this.getPlayerColor()) {
                 locs.add(kingmove);
             }
         }
         if (!hasMoved) {
             if (canCastleLeft()) { //Left for player one
                 Piece rookLeft = (Piece) gr.get(new Location(this.getLocation().getRow(), this.getLocation().getCol() - 4));
-                if (rookLeft != null && rookLeft instanceof Rook && rookLeft.getPieceColor() == this.getPieceColor() && !((Rook) rookLeft).hasMoved()) {
+                if (rookLeft != null && rookLeft instanceof Rook && rookLeft.getPlayerColor() == this.getPlayerColor() && !((Rook) rookLeft).hasMoved()) {
                     locs.add(new Location(this.getLocation().getRow(), this.getLocation().getCol() - 2));
                 }
             }
             if (canCastleRight()) { //Right for player one
                 Piece rookRight = (Piece) gr.get(new Location(this.getLocation().getRow(), this.getLocation().getCol() + 3));
-                if (rookRight != null && rookRight instanceof Rook && rookRight.getPieceColor() == this.getPieceColor() && !((Rook) rookRight).hasMoved()) {
+                if (rookRight != null && rookRight instanceof Rook && rookRight.getPlayerColor() == this.getPlayerColor() && !((Rook) rookRight).hasMoved()) {
                     locs.add(new Location(this.getLocation().getRow(), this.getLocation().getCol() + 2));
                 }
             }
@@ -50,17 +55,18 @@ public class King extends Piece {
         return locs;
     }
     private boolean canCastleLeft() {
+        Grid<Piece> gr = getGrid();
         Location workingLocation = getLocation().getAdjacentLocation(Location.WEST);
         for (int i = 0; i < 3; i++) {
-            if (gr.get(workingLocation) == null) {
-                workingLocation = getLocation().getAdjacentLocation(Location.WEST);
-                continue;
+            if (gr.get(workingLocation) != null) {
+                return false;
             }
-            return false;
+            workingLocation = getLocation().getAdjacentLocation(Location.WEST);
         }
         return true;
     }
     private boolean canCastleRight() {
+        Grid<Piece> gr = getGrid();
         Location workingLocation = getLocation().getAdjacentLocation(Location.EAST);
         for (int i = 0; i < 2; i++) {
             if (gr.get(workingLocation) == null) {

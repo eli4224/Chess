@@ -5,6 +5,7 @@
  */
 package chess;
 
+import info.gridworld.grid.Grid;
 import info.gridworld.grid.Location;
 import java.util.ArrayList;
 
@@ -13,9 +14,13 @@ import java.util.ArrayList;
  * @author elicowa
  */
 public abstract class WideMovingPiece extends Piece {
+    public WideMovingPiece(PlayerColor c) {
+        super(c);
+    }
     protected abstract int[] getMovableDirections();
     @Override
     public final ArrayList<Location> getMoves() {
+        Grid<Piece> gr = getGrid();
         if (!gr.isValid(this.getLocation())) {
             throw new NullPointerException("Piece location not on grid");
         }
@@ -35,10 +40,10 @@ public abstract class WideMovingPiece extends Piece {
                 if (!(gr.get(workingLocation) instanceof Piece)) {
                     throw new IllegalStateException("An object that is not a piece is on the board");
                 }
-                if (((Piece) gr.get(workingLocation)).getPieceColor() == this.getPieceColor()) {
+                if (gr.get(workingLocation).getPlayerColor() == this.getPlayerColor()) {
                     break;
                 }
-                if (((Piece) gr.get(workingLocation)).getPieceColor() != this.getPieceColor()) {
+                if (gr.get(workingLocation).getPlayerColor() != this.getPlayerColor()) {
                     locs.add(workingLocation);
                     break;
                 }

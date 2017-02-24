@@ -5,7 +5,6 @@
  */
 package chess;
 
-import info.gridworld.actor.Actor;
 import info.gridworld.grid.Grid;
 import info.gridworld.grid.Location;
 import java.util.ArrayList;
@@ -15,10 +14,13 @@ import java.util.ArrayList;
  * @author elicowa
  */
 public class Knight extends Piece {
+    public Knight(PlayerColor c) {
+        super(c);
+    }
     @Override
     public ArrayList<Location> getMoves() {
         ArrayList<Location> locs = new ArrayList();
-        Grid<Actor> gr = getGrid();
+        Grid<Piece> gr = getGrid();
         for (int counter = 0; counter < 2; counter++) {
             for (int direction = 2; direction >= -2; direction -= 4) {
                 for (int i = -1; i <= 1; i = i + 2) {
@@ -28,7 +30,7 @@ public class Knight extends Piece {
                     } else {
                         knightmove = new Location(this.getLocation().getRow() + direction, this.getLocation().getCol() + i);
                     }
-                    if (gr.isValid(knightmove) && (gr.get(knightmove) == null || (gr.get(knightmove) instanceof Piece && ((Piece) gr.get(knightmove)).getPieceColor() != this.getPieceColor()))) {
+                    if (gr.isValid(knightmove) && (gr.get(knightmove) == null || gr.get(knightmove).getPlayerColor() != this.getPlayerColor())) {
                         locs.add(knightmove);
                     }
                 }

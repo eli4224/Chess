@@ -13,6 +13,9 @@ import info.gridworld.grid.Location;
  */
 public class Queen extends WideMovingPiece {
     public static final int[] movableDirections = {Location.NORTH, Location.EAST, Location.SOUTH, Location.WEST, Location.NORTHEAST, Location.NORTHWEST, Location.SOUTHEAST, Location.SOUTHWEST};
+    public Queen(PlayerColor c) {
+        super(c);
+    }
     @Override
     protected int[] getMovableDirections() {
         return movableDirections;

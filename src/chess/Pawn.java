@@ -27,7 +27,6 @@ public class Pawn extends Piece {
                 this.homeRow = false;
             }
             if ((loc.getRow() == 0 && this.getPlayerColor() == PLAYER_ONE_COLOR) || loc.getRow() == 7 && this.getPlayerColor() == PLAYER_TWO_COLOR) {
-                this.removeSelfFromGrid();
                 new Queen(this.getPlayerColor()).putSelfInGrid(grid, loc);
             }
             return true;

@@ -14,6 +14,7 @@ import java.util.ArrayList;
  * @author elicowa
  */
 public class Knight extends Piece {
+    private static int[][] offset = {{2, 1}, {1, 2}, {-2, 1}, {-1, 2}, {-2, -1}, {-1, -2}, {2, -1}, {1, -2}};
     public Knight(PlayerColor c) {
         super(c);
     }
@@ -21,19 +22,13 @@ public class Knight extends Piece {
     public ArrayList<Location> getMoves() {
         ArrayList<Location> locs = new ArrayList();
         Grid<Piece> gr = getGrid();
-        for (int counter = 0; counter < 2; counter++) {
-            for (int direction = 2; direction >= -2; direction -= 4) {
-                for (int i = -1; i <= 1; i = i + 2) {
-                    Location knightmove;
-                    if (counter != 0) {
-                        knightmove = new Location(this.getLocation().getRow() + i, this.getLocation().getCol() + direction);
-                    } else {
-                        knightmove = new Location(this.getLocation().getRow() + direction, this.getLocation().getCol() + i);
-                    }
-                    if (gr.isValid(knightmove) && (gr.get(knightmove) == null || gr.get(knightmove).getPlayerColor() != this.getPlayerColor())) {
-                        locs.add(knightmove);
-                    }
-                }
+        Location loc;
+        int r = getLocation().getRow();
+        int c = getLocation().getCol();
+        for (int[] o : offset) {
+            loc = new Location(r + o[0], c + o[1]);
+            if (gr.isValid(loc) && (gr.get(loc) == null || gr.get(loc).getPlayerColor() != this.getPlayerColor())) {
+                locs.add(loc);
             }
         }
         return locs;

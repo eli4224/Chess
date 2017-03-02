@@ -19,7 +19,7 @@ public abstract class Piece {
     public final static PlayerColor PLAYER_ONE_COLOR = PlayerColor.WHITE;
     public final static PlayerColor PLAYER_TWO_COLOR = PlayerColor.BLACK;
     public static enum PlayerColor {
-        WHITE(Color.WHITE, Location.NORTH), BLACK(Color.WHITE, Location.SOUTH);
+        WHITE(new Color(238, 161, 68), Location.NORTH), BLACK(Color.BLACK, Location.NORTH);
         private Color rgb;
         private int direction;
         private PlayerColor(Color rbgvalue, int dir) {
@@ -76,7 +76,7 @@ public abstract class Piece {
     }
     //Methods from Actor
     public String toString() {
-        return getClass().getName() + "[location=" + location + ",direction="
+        return getClass().getSimpleName() + "[location=" + location + ",direction="
                 + direction + ",color=" + playerColor + "]";
     }
     public void putSelfInGrid(Grid<Piece> gr, Location loc) {

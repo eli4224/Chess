@@ -37,9 +37,6 @@ public abstract class WideMovingPiece extends Piece {
                     locs.add(workingLocation);
                     continue;
                 }
-                if (!(gr.get(workingLocation) instanceof Piece)) {
-                    throw new IllegalStateException("An object that is not a piece is on the board");
-                }
                 if (gr.get(workingLocation).getPlayerColor() == this.getPlayerColor()) {
                     break;
                 }
@@ -51,5 +48,29 @@ public abstract class WideMovingPiece extends Piece {
             }
         }
         return locs;
+    }
+    public boolean canMoveTo(Location loc) {
+        Grid<Piece> gr = this.getGrid();
+        if (!gr.isValid(loc)) {
+            return false;
+        }
+        int dR = Math.abs(this.getLocation().getRow() - loc.getRow());
+        int dC = Math.abs(this.getLocation().getCol() - loc.getCol());
+        if (dR != 0 && dC != 0 && dR != dC) {
+            return false;
+        }
+        int direction = this.getLocation().getDirectionToward(loc);
+        for (int movableDirection : this.getMovableDirections()) {
+            if (direction != movableDirection) {
+                continue;
+            }
+            for (Location workingLocation = this.getLocation().getAdjacentLocation(direction); !workingLocation.equals(loc); workingLocation = workingLocation.getAdjacentLocation(direction)) {
+                if (gr.get(workingLocation) != null) {
+                    return false;
+                }
+            }
+            return gr.get(loc) == null || gr.get(loc).getPlayerColor() != this.getPlayerColor();
+        }
+        return false;
     }
 }

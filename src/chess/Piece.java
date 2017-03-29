@@ -9,12 +9,14 @@ import info.gridworld.grid.Grid;
 import info.gridworld.grid.Location;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author elicowa
  */
-public abstract class Piece {
+public abstract class Piece implements Cloneable {
     //Static Variables
     public final static PlayerColor PLAYER_ONE_COLOR = PlayerColor.WHITE;
     public final static PlayerColor PLAYER_TWO_COLOR = PlayerColor.BLACK;
@@ -51,6 +53,8 @@ public abstract class Piece {
     public abstract ArrayList<Location> getMoves();
     //Instance Methods
     public boolean moveTo(Location loc) { //change to boolean
+        System.out.println(this);
+        System.out.println(loc);
         if (!canMoveTo(loc)) {
             return false;
         }
@@ -59,8 +63,19 @@ public abstract class Piece {
         if (other != null) {
             other.removeSelfFromGrid();
         }
+        Location oldLoc = location;
         location = loc;
         grid.put(location, this);
+        if (Chess.isInCheck(grid, playerColor)) {
+            System.out.println("CHECK");
+            grid.remove(loc);
+            if (other != null) {
+                other.putSelfInGrid(grid, loc);
+            }
+            location = oldLoc;
+            grid.put(location, this);
+            return false;
+        }
         return true;
     }
     public boolean canMoveTo(Location loc) { //TODO: If I have time make this abstract and implement it in each subclass
@@ -73,6 +88,16 @@ public abstract class Piece {
     }
     public PlayerColor getPlayerColor() {
         return playerColor;
+    }
+    public Piece clone(Grid<Piece> grid) {
+        try {
+            Piece p = (Piece) super.clone();
+            p.grid = grid;
+            return p;
+        } catch (CloneNotSupportedException ex) {
+            Logger.getLogger(Piece.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException(ex);
+        }
     }
     //Methods from Actor
     public String toString() {

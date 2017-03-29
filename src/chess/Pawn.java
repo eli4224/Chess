@@ -56,4 +56,21 @@ public class Pawn extends Piece {
         }
         return locs;
     }
+    @Override
+    public boolean canMoveTo(Location l) {
+        Grid<Piece> gr = getGrid();
+        int direction = this.getPlayerColor() == Piece.PLAYER_ONE_COLOR ? -1 : 1;
+        int rowDiff = l.getRow() - this.getLocation().getRow();
+        rowDiff *= direction;
+        int colDiff = l.getCol() - this.getLocation().getCol();
+        if (colDiff == 0) {//Straight Line Fowards
+            if (rowDiff == 1) {
+                return gr.get(l) == null;
+            } else {
+                return (rowDiff == 2 && !hasMoved && gr.get(l) == null && gr.get(new Location(l.getRow() - direction, l.getCol())) == null);
+            }
+        } else {//Take to the side
+            return rowDiff == 1 && Math.abs(colDiff) == 1 && gr.get(l) != null && gr.get(l).getPlayerColor() != this.getPlayerColor();
+        }
+    }
 }

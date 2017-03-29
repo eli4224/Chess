@@ -8,8 +8,11 @@ package chess;
 
 import static chess.Piece.PLAYER_ONE_COLOR;
 import static chess.Piece.PLAYER_TWO_COLOR;
+import info.gridworld.grid.Grid;
 import info.gridworld.grid.Location;
 import info.gridworld.world.World;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -62,4 +65,22 @@ public class Chess {
         world.add(new Location(7, 4), new King(PLAYER_ONE_COLOR));
         world.add(new Location(0, 4), new King(PLAYER_TWO_COLOR));
     }
+    public static boolean isInCheck(Grid<Piece> grid, Piece.PlayerColor playerColor) { //color of the calling piece
+        List<Piece> pieceStream = grid.getOccupiedLocations().stream().parallel().map(grid::get).collect(Collectors.toList());
+        Location king = pieceStream.parallelStream().filter(King.class::isInstance).filter(x -> x.getPlayerColor() == playerColor).findAny().get().getLocation();
+        return pieceStream.parallelStream().filter(x -> x.getPlayerColor() != playerColor).anyMatch(x -> x.canMoveTo(king));
+    }
+    public static boolean isCheckmate(Grid<Piece> grid, Piece.PlayerColor playerColor) { //color of the threatened king
+        return false;
+    }
+    public static boolean isStalemate(Grid<Piece> grid, Piece.PlayerColor playerColor) {
+        return false;
+    }
+    public Grid<Piece> clone(Grid<Piece> prototype) {
+        Grid<Piece> clone = prototype.clone();
+    }
+//    public static double rateBoard(Grid<Piece> grid, Piece.PlayerColor playerColor) {
+//        Map<Class<? extends Piece>, Map<Piece.PlayerColor, Integer>> pieces = new HashMap<>();
+////        return toReturn * (playerColor == PLAYER_ONE_COLOR ? 1 : -1);
+//    }
 }

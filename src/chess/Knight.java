@@ -36,11 +36,10 @@ public class Knight extends Piece {
     @Override
     public boolean canMoveTo(Location loc) {
         Grid<Piece> gr = getGrid();
-        if (!gr.isValid(loc) || (gr.get(loc) != null && gr.get(loc).getPlayerColor() == this.getPlayerColor())) {
-            return false;
-        }
         int dr = Math.abs(getLocation().getRow() - loc.getRow());
         int dc = Math.abs(getLocation().getCol() - loc.getCol());
-        return ((1 << dr) | (1 << dc)) == 0b00001100;
+        return (((1 << dr) | (1 << dc)) == 6)
+                && gr.isValid(loc)
+                && (gr.get(loc) == null || gr.get(loc).getPlayerColor() != this.getPlayerColor());
     }
 }

@@ -25,9 +25,9 @@ public class King extends Piece {
     public boolean canMoveTo(Location loc) {
         Grid<Piece> gr = getGrid();
         Location myloc = getLocation();
-        return /* Close Enough */ Math.abs(myloc.getRow() - loc.getRow()) <= 1 && Math.abs(myloc.getCol() - loc.getCol()) <= 1
+        return /* Close Enough */ (Math.abs(myloc.getRow() - loc.getRow()) <= 1 && Math.abs(myloc.getCol() - loc.getCol()) <= 1)
                 && /* Valid */ gr.isValid(loc)
-                && /* Right Color */ gr.get(loc) == null || gr.get(loc).getPlayerColor() != this.getPlayerColor();
+                && /* Right Color */ (gr.get(loc) == null || (gr.get(loc).getPlayerColor() != this.getPlayerColor()));
     }
     @Override
     public boolean moveTo(Location loc) { //TODO castling stuff

@@ -11,8 +11,10 @@ import static chess.Piece.PLAYER_TWO_COLOR;
 import info.gridworld.grid.Grid;
 import info.gridworld.grid.Location;
 import info.gridworld.world.World;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -66,9 +68,10 @@ public class Chess {
         world.add(new Location(0, 4), new King(PLAYER_TWO_COLOR));
     }
     public static boolean isInCheck(Grid<Piece> grid, Piece.PlayerColor playerColor) { //color of the calling piece
-        List<Piece> pieceStream = grid.getOccupiedLocations().stream().parallel().map(grid::get).collect(Collectors.toList());
-        Location king = pieceStream.parallelStream().filter(King.class::isInstance).filter(x -> x.getPlayerColor() == playerColor).findAny().get().getLocation();
-        return pieceStream.parallelStream().filter(x -> x.getPlayerColor() != playerColor).anyMatch(x -> x.canMoveTo(king));
+        return false;
+//        List<Piece> pieceStream = grid.getOccupiedLocations().stream().parallel().map(grid::get).collect(Collectors.toList());
+//        Location king = pieceStream.parallelStream().filter(King.class::isInstance).filter(x -> x.getPlayerColor() == playerColor).findAny().get().getLocation();
+//        return pieceStream.parallelStream().filter(x -> x.getPlayerColor() != playerColor).anyMatch(x -> x.canMoveTo(king));
     }
     public static boolean isCheckmate(Grid<Piece> grid, Piece.PlayerColor playerColor) { //color of the threatened king
         return false;
@@ -76,8 +79,48 @@ public class Chess {
     public static boolean isStalemate(Grid<Piece> grid, Piece.PlayerColor playerColor) {
         return false;
     }
-    public Grid<Piece> clone(Grid<Piece> prototype) {
-        Grid<Piece> clone = prototype.clone();
+    public static final byte[][][][][] sha1 = initializeSHA1();
+    /**
+     * Creates an array of row by column by piece class by color and stores the
+     * combination's sha1
+     */
+    public static byte[][][][][] initializeSHA1() {
+        byte[][][][][] arr = new byte[8][8][6][2][20];
+        MessageDigest SHA1 = null;
+        try {
+            SHA1 = MessageDigest.getInstance("SHA-1");
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(Piece.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        for (int i = 0; i < sha1.length; i++) {
+            for (int j = 0; j < sha1[i].length; j++) {
+                for (int k = 0; k < sha1[i][j].length; k++) {
+                    for (int l = 0; l < sha1[i][j][k].length; l++) {
+                        arr[i][j][k][l] = SHA1.digest(new StringBuilder(i).append(j).append(k).append(l).toString().getBytes());
+                    }
+                }
+            }
+        }
+        return arr;
+    }
+    public static byte[] sha1(Location loc, Class clazz, Piece.PlayerColor color) {
+        int k;
+        if (clazz == Pawn.class) {
+            k = 0;
+        } else if (clazz == Bishop.class) {
+            k = 1;
+        } else if (clazz == Knight.class) {
+            k = 2;
+        } else if (clazz == Rook.class) {
+            k = 3;
+        } else if (clazz == Queen.class) {
+            k = 4;
+        } else if (clazz == King.class) {
+            k = 5;
+        } else {
+            throw new IllegalStateException(clazz.getName() + " is not a piece");
+        }
+        return sha1[loc.getRow()][loc.getCol()][]
     }
 //    public static double rateBoard(Grid<Piece> grid, Piece.PlayerColor playerColor) {
 //        Map<Class<? extends Piece>, Map<Piece.PlayerColor, Integer>> pieces = new HashMap<>();

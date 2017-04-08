@@ -6,6 +6,7 @@
 package chess;
 
 import info.gridworld.grid.BoundedGrid;
+import info.gridworld.grid.Location;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,7 +22,9 @@ public class ChessGrid extends BoundedGrid<Piece> implements Cloneable {
     public ChessGrid clone() {
         try {
             ChessGrid cg = (ChessGrid) super.clone();
-            cg.getOccupiedLocations().stream().parallel().forEach(loc -> this.put(loc, this.get(loc).clone(this)));
+            for (Location loc : cg.getOccupiedLocations()) {
+                cg.put(loc, this.get(loc).clone(cg));
+            }
             return cg;
         } catch (CloneNotSupportedException ex) {
             Logger.getLogger(ChessGrid.class.getName()).log(Level.SEVERE, null, ex);

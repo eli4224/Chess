@@ -99,6 +99,10 @@ public abstract class Piece implements Cloneable {
             throw new RuntimeException(ex);
         }
     }
+    public byte[] toSHA1(Location l) {
+        if (grid.get(l) != null) {
+        }
+    }
     //Methods from Actor
     public String toString() {
         return getClass().getSimpleName() + "[location=" + location + ",direction="

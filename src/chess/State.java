@@ -7,14 +7,15 @@ package chess;
 
 import static chess.Piece.PLAYER_ONE_COLOR;
 import info.gridworld.grid.Grid;
+import info.gridworld.grid.Location;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  *
  * @author elicowa
  */
-class State {
+public class State {
     public final long seed;
     public final Grid<Piece> myGrid;
     List<Long> p1Moves = null; //player one
@@ -24,20 +25,27 @@ class State {
         seed = l;
         myGrid = g;
     }
-    public void populateMoves(Piece.PlayerColor Color) {
-        List<Piece> pieceStream = myGrid.getOccupiedLocations().stream().parallel().map(myGrid::get).collect(Collectors.toList());
-        int score = pieceStream.parallelStream().
+    public void populateMoves(Piece.PlayerColor color) {
+        List<Long> tempList = new ArrayList<Long>();
+        for (Location loc : myGrid.getOccupiedLocations()) {
+            Piece p = myGrid.get(loc);
+            if (p.getPlayerColor() == color) {
+                for (Location move : p.getMoves()) {
+                }
+            }
+        }
     }
-    public List<Long> getMoves(Piece.PlayerColor Color) {
-        if (Color == PLAYER_ONE_COLOR) {
-            if (p1Moves.isEmpty()) {
-                populateMoves(Color);
+    public List<Long> getMoves(Piece.PlayerColor color) {
+        if (color == PLAYER_ONE_COLOR) {
+            if (p1Moves == null) {
+                populateMoves(color);
             }
             return p1Moves;
+        } else {
+            if (p2Moves == null) {
+                populateMoves(color);
+            }
+            return p2Moves;
         }
-        if (p2Moves.isEmpty()) {
-            populateMoves(Color);
-        }
-        return p2Moves;
     }
 }

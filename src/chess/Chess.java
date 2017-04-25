@@ -120,7 +120,7 @@ public class Chess {
         } else {
             throw new IllegalStateException(clazz.getName() + " is not a piece");
         }
-        return sha1[loc.getRow()][loc.getCol()][]
+        return sha1[loc.getRow()][loc.getCol()][k][color.ordinal()];
     }
 //    public static double rateBoard(Grid<Piece> grid, Piece.PlayerColor playerColor) {
 //        Map<Class<? extends Piece>, Map<Piece.PlayerColor, Integer>> pieces = new HashMap<>();

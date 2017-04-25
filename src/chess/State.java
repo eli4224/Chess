@@ -9,6 +9,7 @@ import static chess.Piece.PLAYER_ONE_COLOR;
 import info.gridworld.grid.Grid;
 import info.gridworld.grid.Location;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -16,26 +17,58 @@ import java.util.List;
  * @author elicowa
  */
 public class State {
-    public final long seed;
+    private static HashMap<byte[], State> stateMap = new HashMap();
+    public final byte[] seed;
     public final Grid<Piece> myGrid;
-    List<Long> p1Moves = null; //player one
-    List<Long> p2Moves = null; //player two
+    List<byte[]> p1Moves = null; //player one
+    List<byte[]> p2Moves = null; //player two
     private double rawScore = Double.NaN;
-    public State(long l, Grid<Piece> g) {
+    public State(byte[] l, Grid<Piece> g) {
         seed = l;
         myGrid = g;
     }
     public void populateMoves(Piece.PlayerColor color) {
-        List<Long> tempList = new ArrayList<Long>();
+        List<byte[]> tempList = new ArrayList<byte[]>();
         for (Location loc : myGrid.getOccupiedLocations()) {
             Piece p = myGrid.get(loc);
             if (p.getPlayerColor() == color) {
                 for (Location move : p.getMoves()) {
+                    byte[] hash = new byte[20];
+                    System.arraycopy(seed, 0, hash, 0, 20);
+                    byte[] toXOR;
+                    //Before Moving
+                    toXOR = Chess.sha1(loc, p.getClass(), color);
+                    for (int i = 0; i < 20; i++) {
+                        hash[i] ^= toXOR[i];
+                    }
+                    //After Moving
+                    toXOR = Chess.sha1(move, p.getClass(), color);
+                    for (int i = 0; i < 20; i++) {
+                        hash[i] ^= toXOR[i];
+                    }
+                    //Captured Piece
+                    if (myGrid.get(move) != null) {
+                        toXOR = Chess.sha1(move, myGrid.get(move).getClass(), Piece.PlayerColor.values()[color.ordinal() ^ 1]);
+                        for (int i = 0; i < 20; i++) {
+                            hash[i] ^= toXOR[i];
+                        }
+                    }
+                    tempList.add(hash);
+                    if (!stateMap.containsKey(hash)) {
+                        ChessGrid tempGr = ((ChessGrid) myGrid).clone();
+                        tempGr.get(loc).moveTo(move);
+                        stateMap.put(hash, new State(hash, tempGr));
+                    }
                 }
             }
         }
+        if (color == PLAYER_ONE_COLOR) {
+            p1Moves = tempList;
+        } else {
+            p2Moves = tempList;
+        }
     }
-    public List<Long> getMoves(Piece.PlayerColor color) {
+    public List<byte[]> getMoves(Piece.PlayerColor color) {
         if (color == PLAYER_ONE_COLOR) {
             if (p1Moves == null) {
                 populateMoves(color);

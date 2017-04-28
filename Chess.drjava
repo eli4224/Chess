@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<drjava version="drjava-20160913-225446">
+  <project autorefresh="false" build="build/" main="src.chess.Chess" root="" work="src/">
+    <createjar file=""/>
+    <source>
+      <file active="true" name="src/chess/ChessWorld.java" package="chess" timestamp="27-Apr-2017 10:40:31">
+        <select from="1542" to="1542"/>
+        <scroll column="472" row="0"/>
+      </file>
+      <file name="src/chess/Chess.java" package="chess" timestamp="27-Apr-2017 10:25:09">
+        <select from="1542" to="1542"/>
+        <scroll column="472" row="0"/>
+      </file>
+      <file name="src/chess/Bishop.java" package="chess" timestamp="16-Feb-2017 10:43:46">
+        <select from="1542" to="1542"/>
+        <scroll column="472" row="0"/>
+      </file>
+      <file name="src/chess/ChessGrid.java" package="chess" timestamp="30-Mar-2017 10:15:25">
+        <select from="1542" to="1542"/>
+        <scroll column="472" row="0"/>
+      </file>
+      <file name="src/chess/Piece.java" package="chess" timestamp="18-Apr-2017 11:54:39">
+        <select from="1542" to="1542"/>
+        <scroll column="472" row="0"/>
+      </file>
+      <file name="src/chess/Queen.java" package="chess" timestamp="16-Feb-2017 10:43:46">
+        <select from="1542" to="1542"/>
+        <scroll column="472" row="0"/>
+      </file>
+      <file name="src/chess/Rook.java" package="chess" timestamp="19-Feb-2017 10:21:13">
+        <select from="1542" to="1542"/>
+        <scroll column="472" row="0"/>
+      </file>
+      <file name="src/chess/King.java" package="chess" timestamp="27-Apr-2017 10:42:17">
+        <select from="1542" to="1542"/>
+        <scroll column="472" row="0"/>
+      </file>
+      <file name="src/chess/Knight.java" package="chess" timestamp="27-Apr-2017 10:42:17">
+        <select from="1542" to="1542"/>
+        <scroll column="472" row="0"/>
+      </file>
+      <file name="src/chess/Pawn.java" package="chess" timestamp="27-Apr-2017 10:42:17">
+        <select from="1542" to="1542"/>
+        <scroll column="472" row="0"/>
+      </file>
+      <file name="src/chess/State.java" package="chess" timestamp="27-Apr-2017 10:42:17">
+        <select from="1542" to="1542"/>
+        <scroll column="472" row="0"/>
+      </file>
+      <file name="src/chess/WideMovingPiece.java" package="chess" timestamp="27-Apr-2017 11:34:34">
+        <select from="1542" to="1542"/>
+        <scroll column="472" row="0"/>
+      </file>
+    </source>
+    <included/>
+    <excluded/>
+    <collapsed/>
+    <classpath>
+      <file absolute="false" name="gridworld.jar"/>
+    </classpath>
+    <breakpoints/>
+    <watches/>
+    <bookmarks/>
+    <preferences/>
+  </project>
+</drjava>

@@ -45,8 +45,7 @@ public class ChessWorld extends World<Piece> {
     private void runAI() {
       Grid<Piece> grid = getGrid();
       byte[] defaultSeed = {3,1,4,1,5,9,2,6,5,3,5,8,9,7,3,2,3,8,4,6}; //YOU KNOW WHAT IT IS
-      grid.getOccupiedLocations().stream().map(grid::get).paralel().map(x -> Chess.sha1(x.getLocation(), x.getClass(), x.getPlayerColor()));
-      State workingState = stateMap.get(
+      grid.getOccupiedLocations().stream().parallel().map(grid::get).map(x -> Chess.sha1(x.getLocation(), x.getClass(), x.getPlayerColor()));
     }
     //ActorWorld Methods
     @Override

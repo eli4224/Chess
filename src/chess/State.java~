@@ -17,7 +17,7 @@ import java.util.List;
  * @author elicowa
  */
 public class State {
-    private static HashMap<byte[], State> stateMap = new HashMap<byte[], State>();
+    private static HashMap<byte[], State> stateMap = new HashMap();
     public final byte[] seed;
     public final Grid<Piece> myGrid;
     List<byte[]> p1Moves = null; //player one

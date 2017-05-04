@@ -39,7 +39,7 @@ public class King extends Piece {
     }
     @Override
     public ArrayList<Location> getMoves() {
-        ArrayList<Location> locs = new ArrayList();
+        ArrayList<Location> locs = new ArrayList<Location>();
         Grid<Piece> gr = getGrid();
         for (Location kingmove : gr.getValidAdjacentLocations(this.getLocation())) {
             if (gr.get(kingmove) == null || gr.get(kingmove).getPlayerColor() != this.getPlayerColor()) {

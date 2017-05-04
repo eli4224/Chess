@@ -17,12 +17,12 @@ import java.util.List;
  * @author elicowa
  */
 public class State {
-    private static HashMap<byte[], State> stateMap = new HashMap<byte[], State>();
+    public static HashMap<ByteArrayWrapper, State> stateMap = new HashMap<ByteArrayWrapper, State>();
     public final byte[] seed;
     public final Grid<Piece> myGrid;
     List<byte[]> p1Moves = null; //player one
     List<byte[]> p2Moves = null; //player two
-    private double rawScore = Double.NaN;
+    private Double rawScore = null;
     public State(byte[] l, Grid<Piece> g) {
         seed = l;
         myGrid = g;
@@ -57,7 +57,7 @@ public class State {
                     if (!stateMap.containsKey(hash)) {
                         ChessGrid tempGr = ((ChessGrid) myGrid).clone();
                         tempGr.get(loc).moveTo(move);
-                        stateMap.put(hash, new State(hash, tempGr));
+                        stateMap.put(new ByteArrayWrapper(hash), new State(hash, tempGr));
                     }
                 }
             }
@@ -81,4 +81,10 @@ public class State {
             return p2Moves;
         }
     }
+    public double getScore(){
+      if(rawScore == null){
+        
+      }
+        throw new RuntimeException("too busy with life right now to finish it");
+}
 }

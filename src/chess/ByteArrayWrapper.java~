@@ -1,0 +1,22 @@
+package chess;
+
+public class ByteArrayWrapper{
+  private final byte[] rawHash;
+  
+  @Override
+  public boolean equals(Object o){
+    if(o instanceof Hash){
+      
+    }
+      return false;
+    
+  }
+  @Override
+  public int hashCode(){
+    int toReturn = toReturn | rawHash[0];
+    toReturn |= ((int) (rawHash[1]) << 8);
+    toReturn |= ((int) (rawHash[2]) << 16);
+    toReturn |= ((int) (rawHash[3]) << 24);
+    return toReturn;
+  }
+}

@@ -17,7 +17,7 @@ import java.util.List;
  * @author elicowa
  */
 public class State {
-    private static HashMap<byte[], State> stateMap = new HashMap<byte[], State>();
+    public static HashMap<ByteArrayWrapper, State> stateMap = new HashMap<ByteArrayWrapper, State>();
     public final byte[] seed;
     public final Grid<Piece> myGrid;
     List<byte[]> p1Moves = null; //player one
@@ -57,7 +57,7 @@ public class State {
                     if (!stateMap.containsKey(hash)) {
                         ChessGrid tempGr = ((ChessGrid) myGrid).clone();
                         tempGr.get(loc).moveTo(move);
-                        stateMap.put(hash, new State(hash, tempGr));
+                        stateMap.put(new ByteArrayWrapper(hash), new State(hash, tempGr));
                     }
                 }
             }
@@ -85,5 +85,6 @@ public class State {
       if(rawScore == null){
         
       }
-        
+        throw new RuntimeException("too busy with life right now to finish it");
+}
 }

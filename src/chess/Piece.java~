@@ -22,9 +22,8 @@ public abstract class Piece implements Cloneable {
     public final static PlayerColor PLAYER_TWO_COLOR = PlayerColor.BLACK;
     public static enum PlayerColor {
         WHITE(new Color(238, 161, 68), Location.NORTH), BLACK(Color.BLACK, Location.NORTH);
-        private final Color rgb;
-        private final int direction;
-        public PlayerColor otherColor;
+        private Color rgb;
+        private int direction;
         private PlayerColor(Color rbgvalue, int dir) {
             direction = dir;
             rgb = rbgvalue;
@@ -34,12 +33,6 @@ public abstract class Piece implements Cloneable {
         }
         public Color getColor() {
             return rgb;
-        }
-        public PlayerColor getOtherColor() {
-            if (otherColor == null) {
-                otherColor = values()[ordinal() ^ 1];
-            }
-            return otherColor;
         }
     }
     //Instance Variables
@@ -58,7 +51,6 @@ public abstract class Piece implements Cloneable {
     }
     //Abstract Methods
     public abstract ArrayList<Location> getMoves();
-    public abstract double getValue();
     //Instance Methods
     public boolean moveTo(Location loc) { //change to boolean
         System.out.println(this);

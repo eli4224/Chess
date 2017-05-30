@@ -42,4 +42,8 @@ public class Knight extends Piece {
                 && gr.isValid(loc)
                 && (gr.get(loc) == null || gr.get(loc).getPlayerColor() != this.getPlayerColor());
     }
+        @Override
+    public double getValue() {
+      return 3d;
+    }
 }

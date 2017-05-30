@@ -73,4 +73,8 @@ public class Pawn extends Piece {
             return rowDiff == 1 && Math.abs(colDiff) == 1 && gr.get(l) != null && gr.get(l).getPlayerColor() != this.getPlayerColor();
         }
     }
+        @Override
+    public double getValue() {
+      return 1d;
+    }
 }

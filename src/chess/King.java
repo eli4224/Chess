@@ -14,6 +14,7 @@ import java.util.ArrayList;
  * @author elicowa
  */
 public class King extends Piece {
+  public static final double VALUE = 256;
   private boolean hasMoved = false;
   public King(PlayerColor c) {
     super(c);
@@ -61,6 +62,10 @@ public class King extends Piece {
       }
     }
     return locs;
+  }
+  @Override
+  public double getValue() {
+    return King.VALUE;
   }
   private boolean canCastleLeft() {
     Grid<Piece> gr = getGrid();

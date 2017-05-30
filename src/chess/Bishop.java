@@ -20,4 +20,8 @@ public class Bishop extends WideMovingPiece {
     protected int[] getMovableDirections() {
         return movableDirections;
     }
+    @Override
+    public double getValue() {
+      return 3d;
+    }
 }

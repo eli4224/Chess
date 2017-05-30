@@ -32,8 +32,4 @@ public class Rook extends WideMovingPiece {
     protected int[] getMovableDirections() {
         return movableDirections;
     }
-    @Override
-    public double getValue() {
-      return 5d;
-    }
 }

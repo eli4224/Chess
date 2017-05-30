@@ -20,7 +20,7 @@ public class Knight extends Piece {
     }
     @Override
     public ArrayList<Location> getMoves() {
-        ArrayList<Location> locs = new ArrayList();
+        ArrayList<Location> locs = new ArrayList<Location>();
         Grid<Piece> gr = getGrid();
         Location loc;
         int r = getLocation().getRow();

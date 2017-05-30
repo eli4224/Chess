@@ -20,8 +20,4 @@ public class Queen extends WideMovingPiece {
     protected int[] getMovableDirections() {
         return movableDirections;
     }
-    @Override
-    public double getValue() {
-      return 9d;
-    }
 }

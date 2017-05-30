@@ -18,46 +18,36 @@ import java.util.List;
  */
 public class State {
     public static HashMap<ByteArrayWrapper, State> stateMap = new HashMap<ByteArrayWrapper, State>();
-    public final byte[] seed;
+    public final ByteArrayWrapper seed;
     public final Grid<Piece> myGrid;
-    List<byte[]> p1Moves = null; //player one
-    List<byte[]> p2Moves = null; //player two
+    List<ByteArrayWrapper> p1Moves = null; //player one
+    List<ByteArrayWrapper> p2Moves = null; //player two
     private Double rawScore = null;
-    public State(byte[] l, Grid<Piece> g) {
+    ChessWorld.Result bestScore = null;
+    public State(ByteArrayWrapper l, Grid<Piece> g) {
         seed = l;
         myGrid = g;
     }
-    public void populateMoves(Piece.PlayerColor color) {
-        List<byte[]> tempList = new ArrayList<byte[]>();
+    private void populateMoves(Piece.PlayerColor color) {
+        List<ByteArrayWrapper> tempList = new ArrayList<ByteArrayWrapper>();
         for (Location loc : myGrid.getOccupiedLocations()) {
             Piece p = myGrid.get(loc);
             if (p.getPlayerColor() == color) {
                 for (Location move : p.getMoves()) {
-                    byte[] hash = new byte[20];
-                    System.arraycopy(seed, 0, hash, 0, 20);
-                    byte[] toXOR;
+                    ByteArrayWrapper hash = seed.clone();
                     //Before Moving
-                    toXOR = Chess.sha1(loc, p.getClass(), color);
-                    for (int i = 0; i < 20; i++) {
-                        hash[i] ^= toXOR[i];
-                    }
+                    hash.xor(Chess.sha1(loc, p.getClass(), color));
                     //After Moving
-                    toXOR = Chess.sha1(move, p.getClass(), color);
-                    for (int i = 0; i < 20; i++) {
-                        hash[i] ^= toXOR[i];
-                    }
+                    hash.xor(Chess.sha1(move, p.getClass(), color));
                     //Captured Piece
                     if (myGrid.get(move) != null) {
-                        toXOR = Chess.sha1(move, myGrid.get(move).getClass(), Piece.PlayerColor.values()[color.ordinal() ^ 1]);
-                        for (int i = 0; i < 20; i++) {
-                            hash[i] ^= toXOR[i];
-                        }
+                        hash.xor(Chess.sha1(move, myGrid.get(move).getClass(), Piece.PlayerColor.values()[color.ordinal() ^ 1]));
                     }
                     tempList.add(hash);
                     if (!stateMap.containsKey(hash)) {
                         ChessGrid tempGr = ((ChessGrid) myGrid).clone();
                         tempGr.get(loc).moveTo(move);
-                        stateMap.put(new ByteArrayWrapper(hash), new State(hash, tempGr));
+                        stateMap.put(hash, new State(hash, tempGr));
                     }
                 }
             }
@@ -68,7 +58,7 @@ public class State {
             p2Moves = tempList;
         }
     }
-    public List<byte[]> getMoves(Piece.PlayerColor color) {
+    public List<ByteArrayWrapper> getMoves(Piece.PlayerColor color) {
         if (color == PLAYER_ONE_COLOR) {
             if (p1Moves == null) {
                 populateMoves(color);
@@ -81,10 +71,26 @@ public class State {
             return p2Moves;
         }
     }
-    public double getScore(){
-      if(rawScore == null){
-        
-      }
-        throw new RuntimeException("too busy with life right now to finish it");
-}
+    public double getScore() {
+        if (rawScore == null) {
+            double white = 0;
+            double black = 0;
+            for (Location loc : myGrid.getOccupiedLocations()) {
+                Piece p = myGrid.get(loc);
+                if (p.getPlayerColor() == Piece.PLAYER_ONE_COLOR) {
+                    white += p.getValue();
+                } else {
+                    black += p.getValue();
+                }
+            }
+            if (white < King.VALUE) {
+                return (rawScore = Double.NEGATIVE_INFINITY);
+            }
+            if (black < King.VALUE) {
+                return (rawScore = Double.POSITIVE_INFINITY);
+            }
+            rawScore = (white - black) / Math.sqrt(white + black - King.VALUE);
+        }
+        return rawScore;
+    }
 }

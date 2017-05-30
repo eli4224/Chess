@@ -79,31 +79,31 @@ public class Chess {
     public static boolean isStalemate(Grid<Piece> grid, Piece.PlayerColor playerColor) {
         return false;
     }
-    public static final byte[][][][][] sha1 = initializeSHA1();
+    public static final ByteArrayWrapper[][][][] sha1 = initializeSHA1();
     /**
      * Creates an array of row by column by piece class by color and stores the
      * combination's sha1
      */
-    public static byte[][][][][] initializeSHA1() {
-        byte[][][][][] arr = new byte[8][8][6][2][20];
+    public static ByteArrayWrapper[][][][] initializeSHA1() {
+        ByteArrayWrapper[][][][] arr = new ByteArrayWrapper[8][8][6][2];
         MessageDigest SHA1 = null;
         try {
             SHA1 = MessageDigest.getInstance("SHA-1");
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(Piece.class.getName()).log(Level.SEVERE, null, ex);
         }
-        for (int i = 0; i < sha1.length; i++) {
-            for (int j = 0; j < sha1[i].length; j++) {
-                for (int k = 0; k < sha1[i][j].length; k++) {
-                    for (int l = 0; l < sha1[i][j][k].length; l++) {
-                        arr[i][j][k][l] = SHA1.digest(new StringBuilder(i).append(j).append(k).append(l).toString().getBytes());
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = 0; j < arr[i].length; j++) {
+                for (int k = 0; k < arr[i][j].length; k++) {
+                    for (int l = 0; l < arr[i][j][k].length; l++) {
+                        arr[i][j][k][l] = new ByteArrayWrapper(SHA1.digest(new StringBuilder(i).append(j).append(k).append(l).toString().getBytes()));
                     }
                 }
             }
         }
         return arr;
     }
-    public static byte[] sha1(Location loc, Class clazz, Piece.PlayerColor color) {
+    public static ByteArrayWrapper sha1(Location loc, Class clazz, Piece.PlayerColor color) {
         int k;
         if (clazz == Pawn.class) {
             k = 0;
@@ -120,7 +120,7 @@ public class Chess {
         } else {
             throw new IllegalStateException(clazz.getName() + " is not a piece");
         }
-        return sha1[loc.getRow()][loc.getCol()][k][color.ordinal()];
+        return sha1[loc.getRow()][loc.getCol()][k][color.ordinal()].clone();
     }
 //    public static double rateBoard(Grid<Piece> grid, Piece.PlayerColor playerColor) {
 //        Map<Class<? extends Piece>, Map<Piece.PlayerColor, Integer>> pieces = new HashMap<>();

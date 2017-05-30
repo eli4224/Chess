@@ -35,7 +35,7 @@ public class Pawn extends Piece {
     }
     @Override
     public ArrayList<Location> getMoves() {
-        ArrayList<Location> locs = new ArrayList();
+        ArrayList<Location> locs = new ArrayList<Location>();
         Grid<Piece> gr = getGrid();
         int rowDirection = this.getPlayerColor() == Piece.PLAYER_ONE_COLOR ? Location.NORTH : Location.SOUTH;
         Location stPawnMove = this.getLocation().getAdjacentLocation(rowDirection);

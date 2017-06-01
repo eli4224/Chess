@@ -24,7 +24,7 @@ public class State {
     List<ByteArrayWrapper> p2Moves = null; //player two
     private Double rawScore = null;
     ChessWorld.Result bestScore = null;
-    public State(ByteArrayWrapper l, Grid<Piece> g) {
+    public State(ByteArrayWrapper l, ChessGrid g) {
         seed = l;
         myGrid = g;
     }
@@ -45,7 +45,8 @@ public class State {
                     }
                     tempList.add(hash);
                     if (!stateMap.containsKey(hash)) {
-                        ChessGrid tempGr = ((ChessGrid) myGrid).clone();
+                        ChessGrid casted = (ChessGrid) myGrid;
+                        ChessGrid tempGr = casted.clone();
                         tempGr.get(loc).moveTo(move);
                         stateMap.put(hash, new State(hash, tempGr));
                     }

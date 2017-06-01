@@ -40,6 +40,7 @@ public abstract class Piece implements Cloneable {
                 otherColor = values()[ordinal() ^ 1];
             }
             return otherColor;
+            // return c.values()[ordinal() ^1];
         }
     }
     //Instance Variables
@@ -61,8 +62,8 @@ public abstract class Piece implements Cloneable {
     public abstract double getValue();
     //Instance Methods
     public boolean moveTo(Location loc) { //change to boolean
-        System.out.println(this);
-        System.out.println(loc);
+        //System.out.println(this);
+        //System.out.println(loc);
         if (!canMoveTo(loc)) {
             return false;
         }

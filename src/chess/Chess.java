@@ -122,6 +122,12 @@ public class Chess {
         }
         return sha1[loc.getRow()][loc.getCol()][k][color.ordinal()].clone();
     }
+    public static void setWorld(Grid gr) {
+        ChessWorld tempWorld = new ChessWorld();
+        tempWorld.setGrid(gr);
+        tempWorld.show();
+        System.out.println("SetWorld");
+    }
 //    public static double rateBoard(Grid<Piece> grid, Piece.PlayerColor playerColor) {
 //        Map<Class<? extends Piece>, Map<Piece.PlayerColor, Integer>> pieces = new HashMap<>();
 ////        return toReturn * (playerColor == PLAYER_ONE_COLOR ? 1 : -1);
